@@ -97,8 +97,17 @@ def assemble(code):
     assembled = []
     for line in code.splitlines():
         line = line.strip()
-        if line.startswith("#"):
-            continue  
-        binary = parse_instruction(line)
-        assembled.append(binary)
+        if not line:
+            assembled.append("0000000000000000")
+        elif line.startswith("#"):
+            continue
+        else:
+            binary = parse_instruction(line)
+            assembled.append(binary)
+        if len(assembled) == 256:
+            return(assembled)
+    # Pad with zeroes if fewer than 256 lines
+    while len(assembled) < 256:
+        assembled.append("0000000000000000")
     return assembled
+
